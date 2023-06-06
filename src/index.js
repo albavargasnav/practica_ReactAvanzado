@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import storage from './utils/storage';
 import { setAuthorizationHeader } from './api/client';
+
+import './redux';
+
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './components/auth/context';
 
