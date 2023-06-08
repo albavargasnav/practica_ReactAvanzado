@@ -1,8 +1,8 @@
-import { ADVERTS_LOADED, AUTH_LOGIN, AUTH_LOGOUT } from "./types";
+import { AUTH_LOGIN, AUTH_LOGOUT, ADVERTS_LOADED } from "./types";
 
 export const authLogin = () => ({
     type: AUTH_LOGIN,
-})
+});
 
 export const authLogout = () => ({
     type: AUTH_LOGOUT,
