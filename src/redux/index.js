@@ -13,7 +13,7 @@ const composeEnhancers = composeWithDevTools ({
 })
 
 
-export default function configureStore() {
-    const store = createStore(reducer, composeEnhancers());
+export default function configureStore(preloadedState) {
+    const store = createStore(reducer, preloadedState, composeEnhancers());
     return store;
 }
