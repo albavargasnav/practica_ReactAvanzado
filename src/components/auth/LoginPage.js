@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import Button from '../shared/Button';
 import FormField from '../shared/FormField';
 import { login } from './service';
 import './LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from './context';
 import { useRef } from 'react';
 import { useEffect } from 'react';
+import { authLogin } from '../../redux/actions';
 
 
 function LoginPage() {
-  const { onLogin } = useAuth();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const renders = useRef(0);
@@ -31,6 +33,9 @@ function LoginPage() {
   const resetError = () => {
     setError(null);
   };
+
+  const onLogin = () => dispatch(authLogin());
+
 
   const handleSubmit = async event => {
     event.preventDefault();

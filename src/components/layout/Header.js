@@ -1,3 +1,4 @@
+import { useDispatch } from 'react-redux';
 import Button from '../shared/Button';
 import { ReactComponent as Icon } from "../../assets/pageicon.svg";
 import { logout } from "../auth/service";
@@ -5,9 +6,12 @@ import classNames from "classnames";
 import "./Header.css";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../auth/context";
+import { authLogout } from '../../redux/actions';
 
 const Header = ({ className }) => {
-  const { isLogged, onLogout } = useAuth();
+  const { isLogged } = useAuth();
+  const dispatch = useDispatch();
+  const onLogout = () => dispatch(authLogout());
   const handleLogoutClick = async () => {
     await logout();
     onLogout();
