@@ -2,14 +2,19 @@ import { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import Button from '../shared/Button';
 import './NewAdvertPage.css';
-import { createAdvert, getTags } from './service';
+import { getTags } from './service'; //añadir gettags en advertcreate un poco mas abajo (en actions)
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { advertCreate } from '../../store/actions';
+import { getUi } from '../../store/selectors';
+
 
 const MIN_CHARACTERS = 5;
 
 const NewAdvertPage = () => {
+  const dispatch = useDispatch();
+  const { isLoading } = useSelector(getUi);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
   const [sale, setSale] = useState(false);
   const [tags, setTags] = useState([]);
@@ -54,7 +59,7 @@ const NewAdvertPage = () => {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      setIsLoading(true);
+      const advert = await dispatch(advertCreate({ content }));
       const formData = new FormData();
       formData.append('name', name);
       formData.append('sale', sale);
@@ -63,7 +68,7 @@ const NewAdvertPage = () => {
       if (photo) {
         formData.append('photo', photo);
       }
-      const advert = await createAdvert(formData);
+      await advertCreate(formData);
 
       setIsLoading(false);
       navigate(`/adverts/${advert.id}`);

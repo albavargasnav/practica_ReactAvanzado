@@ -2,6 +2,7 @@ import {
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   ADVERTS_LOADED_SUCCESS,
+  ADVERT_CREATED_SUCCESS,
   ADVERT_LOADED_SUCCESS,
   UI_RESET_ERROR,
 } from './types';
@@ -48,6 +49,10 @@ export function adverts(state = defaultState.adverts, action) {
   }
   if (action.type === ADVERT_LOADED_SUCCESS) {
     return { ...state, data: [action.payload] };
+  }
+  if (action.type === ADVERT_CREATED_SUCCESS) {
+    // return { ...state, data: [action.payload, ...state.data] };
+    return { ...state, data: [action.payload].concat(state.data) };
   }
   return state;
 }
