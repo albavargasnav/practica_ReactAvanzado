@@ -1,31 +1,23 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 import Layout from "../layout/Layout";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; //QUITAR "USESTATE" CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
 import { deleteAdvert } from "./service"; 
 import { getAdvert } from '../../store/selectors';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { advertLoad } from '../../store/actions';
 import placeholderImage from "../../assets/placeholder.jpg";
 import './Advert.css'
 
 const AdvertPage = () => {
+  const dispatch = useDispatch();
   const { advertId } = useParams();
   const navigate = useNavigate();
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); //QUITAR CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
   // const advert = useSelector(state => getAdvert(state, advertId));
   const advert = useSelector(getAdvert(advertId));
   const advertSale = advert && advert.sale ? "En venta" : "Se busca";
   const [showAlert, setShowAlert] = useState(false);
 
-  // useEffect(() => {
-  //   getAdvert(params.Id)
-  //     .then((advert) => setAdvert(advert))
-  //     .catch((error) => {
-  //       if (error.status === 404) {
-  //         return navigate("/404");
-  //       }
-  //       setError(error);
-  //     });
-  // }, [params.Id, navigate]);
 
   const handleDeleteClick = () => {
     setShowAlert(true);
@@ -45,9 +37,13 @@ const AdvertPage = () => {
     setShowAlert(false);
   };
 
-  if (error?.status === 404) {
-    return <Navigate to="/404" />;
-  }
+  useEffect(() => {
+    dispatch(advertLoad(advertId)).catch(error => {
+      if (error.status === 404) {
+        return navigate('/404');
+      }
+    });
+  }, [dispatch, advertId, navigate]);
 
   return (
     <Layout title="Advert Page">

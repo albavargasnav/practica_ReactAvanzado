@@ -2,6 +2,7 @@ import {
   AUTH_LOGIN_SUCCESS,
   AUTH_LOGOUT,
   ADVERTS_LOADED_SUCCESS,
+  ADVERT_LOADED_SUCCESS,
   UI_RESET_ERROR,
 } from './types';
 
@@ -23,8 +24,8 @@ export const defaultState = {
 //       return { ...state, auth: true };
 //     case AUTH_LOGOUT:
 //       return { ...state, auth: false };
-//     case TWEETS_LOADED:
-//       return { ...state, tweets: action.payload };
+//     case ADVERTS_LOADED:
+//       return { ...state, adverts: action.payload };
 //     default:
 //       return state;
 //   }
@@ -44,6 +45,9 @@ export function auth(state = defaultState.auth, action) {
 export function adverts(state = defaultState.adverts, action) {
   if (action.type === ADVERTS_LOADED_SUCCESS) {
     return { areLoaded: true, data: action.payload };
+  }
+  if (action.type === ADVERT_LOADED_SUCCESS) {
+    return { ...state, data: [action.payload] };
   }
   return state;
 }
@@ -72,6 +76,6 @@ export function ui(state = defaultState.ui, action) {
 // export default function combinedReducer(state = defaultState, action) {
 //   return {
 //     auth: auth(state.auth, action),
-//     tweets: tweets(state.tweets, action),
+//     adverts: adverts(state.adverts, action),
 //   };
 // }
