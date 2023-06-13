@@ -5,6 +5,9 @@ import Layout from '../layout/Layout';
 import Advert from './Advert';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
+import { connect } from 'react-redux';
+import { getAdverts } from '../../store/selectors';
+import { advertsLoaded } from '../../store/actions';
 import './Advert.css'
 
 const EmptyList = () => (
@@ -16,11 +19,10 @@ const EmptyList = () => (
   </div>
 );
 
-const AdvertsPage = () => {
+const AdvertsPage = ({ adverts, onAdvertsLoaded }) => {
   const isMounted = useRef(false);
   const [query, setQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [adverts, setAdverts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);;
   const [saleFilter, setSaleFilter] = useState(null);
 
   useEffect(() => {
@@ -32,7 +34,7 @@ const AdvertsPage = () => {
       setIsLoading(true);
       const adverts = await getLatestAdverts();
 
-      setAdverts(adverts);
+      onAdvertsLoaded(adverts);
       setIsLoading(false);
     }
 
@@ -95,4 +97,16 @@ const AdvertsPage = () => {
   );
 };
 
-export default AdvertsPage;
+const mapStateToProps = state => ({
+  adverts: getAdverts(state),
+});
+
+// const mapDispatchToProps = dispatch => ({
+//   onAdvertsLoaded: adverts => dispatch(advertsLoaded(adverts)),
+// });
+
+const mapDispatchToProps = {
+  onAdvertsLoaded: advertsLoaded,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdvertsPage);
