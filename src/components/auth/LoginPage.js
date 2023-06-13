@@ -8,7 +8,7 @@ import './LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { authLogin } from '../../redux/actions';
+import { authLogin } from '../../store/actions';
 
 
 function LoginPage() {

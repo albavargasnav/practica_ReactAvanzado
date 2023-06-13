@@ -1,15 +1,15 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../shared/Button';
 import { ReactComponent as Icon } from "../../assets/pageicon.svg";
 import { logout } from "../auth/service";
 import classNames from "classnames";
 import "./Header.css";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../auth/context";
-import { authLogout } from '../../redux/actions';
+import { authLogout } from '../../store/actions';
+import { getIsLogged } from '../../store/selectors';
 
 const Header = ({ className }) => {
-  const { isLogged } = useAuth();
+  const isLogged = useSelector(getIsLogged);
   const dispatch = useDispatch();
   const onLogout = () => dispatch(authLogout());
   const handleLogoutClick = async () => {
