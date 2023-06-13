@@ -8,12 +8,7 @@ import './LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import {
-  authLoginFailure,
-  authLoginRequest,
-  authLoginSuccess,
-  uiResetError,
-} from '../../store/actions';
+import { authLogin, uiResetError } from '../../store/actions';
 import { getUi } from '../../store/selectors';
 
 
@@ -40,20 +35,16 @@ function LoginPage() {
     dispatch(uiResetError());
   };
 
-  const onLogin = () => dispatch(authLoginSuccess());
-
 
   const handleSubmit = async event => {
     event.preventDefault();
-    dispatch(authLoginRequest());
-    try {
-      await login(credentials, rememberMe);
-      onLogin();
-      const to = location.state?.from?.pathname || '/';
-      navigate(to);
-    } catch (error) {
-      dispatch(authLoginFailure(error));
-    }
+    dispatch(authLogin(credentials))
+      .then(() => {
+        // Redirect to pathname
+        const to = location.state?.from?.pathname || '/';
+        navigate(to);
+      })
+      .catch(error => console.log(error));
   };
 
   const handleChange = event => {
