@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../shared/Button';
 import FormField from '../shared/FormField';
@@ -8,21 +8,27 @@ import './LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { authLogin } from '../../store/actions';
+import {
+  authLoginFailure,
+  authLoginRequest,
+  authLoginSuccess,
+  uiResetError,
+} from '../../store/actions';
+import { getUi } from '../../store/selectors';
 
 
 function LoginPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoading, error } = useSelector(getUi);
   const renders = useRef(0);
 
   useEffect(() => {
     renders.current++;
     console.log(renders.current, ' times rendered');
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+
   const [credentials, setCredentials] = useState({
         email: '',
         password: '',
@@ -31,25 +37,22 @@ function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
 
   const resetError = () => {
-    setError(null);
+    dispatch(uiResetError());
   };
 
-  const onLogin = () => dispatch(authLogin());
+  const onLogin = () => dispatch(authLoginSuccess());
 
 
   const handleSubmit = async event => {
     event.preventDefault();
-    resetError();
-    setIsLoading(true);
+    dispatch(authLoginRequest());
     try {
       await login(credentials, rememberMe);
-      setIsLoading(false);
       onLogin();
       const to = location.state?.from?.pathname || '/';
       navigate(to);
     } catch (error) {
-      setError(error);
-      setIsLoading(false);
+      dispatch(authLoginFailure(error));
     }
   };
 
