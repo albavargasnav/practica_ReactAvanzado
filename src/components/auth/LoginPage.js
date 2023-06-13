@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '../shared/Button';
 import FormField from '../shared/FormField';
-import { login } from './service';
 import './LoginPage.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';

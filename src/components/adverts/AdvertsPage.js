@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { getLatestAdverts } from './service';
 import Button from '../shared/Button';
 import Layout from '../layout/Layout';
 import Advert from './Advert';
 import { Link } from 'react-router-dom';
 import { useRef } from 'react';
 import { connect } from 'react-redux';
-import { getAdverts } from '../../store/selectors';
+import { getAdverts, getUi } from '../../store/selectors';
 import { advertsLoaded } from '../../store/actions';
 import './Advert.css'
 
@@ -19,10 +18,9 @@ const EmptyList = () => (
   </div>
 );
 
-const AdvertsPage = ({ adverts, onAdvertsLoaded }) => {
+const AdvertsPage = ({ adverts, onAdvertsLoaded, isLoading }) => {
   const isMounted = useRef(false);
   const [query, setQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(true);;
   const [saleFilter, setSaleFilter] = useState(null);
 
   useEffect(() => {
@@ -30,16 +28,8 @@ const AdvertsPage = ({ adverts, onAdvertsLoaded }) => {
   }, []);
 
   useEffect(() => {
-    async function fetchData() {
-      setIsLoading(true);
-      const adverts = await getLatestAdverts();
-
-      onAdvertsLoaded(adverts);
-      setIsLoading(false);
-    }
-
-    fetchData();
-  }, []);
+    onAdvertsLoaded();
+  }, [onAdvertsLoaded]);
 
   const filteredAdverts = adverts.filter(advert =>
     (advert.name ?? '').toUpperCase().startsWith(query.toUpperCase())
@@ -99,6 +89,7 @@ const AdvertsPage = ({ adverts, onAdvertsLoaded }) => {
 
 const mapStateToProps = state => ({
   adverts: getAdverts(state),
+  ...getUi(state),
 });
 
 // const mapDispatchToProps = dispatch => ({
