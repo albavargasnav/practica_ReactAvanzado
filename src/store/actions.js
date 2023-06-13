@@ -97,7 +97,7 @@ export const advertsLoaded =
   
   export const advertLoad =
     advertId =>
-    async (dispatch, getState, { service, router }) => {
+    async (dispatch, getState, { service }) => {
       const isLoaded = getAdvert(advertId)(getState());
       if (isLoaded) {
         return;
@@ -108,9 +108,6 @@ export const advertsLoaded =
         dispatch(advertLoadedSuccess(advert));
       } catch (error) {
         dispatch(advertLoadedFailure(error));
-        if (error.status === 404) {
-          return router.navigate('/404');
-        }
       }
     };
 
@@ -141,9 +138,6 @@ export const advertsLoaded =
           return createdAdvert;
         } catch (error) {
           dispatch(advertCreateFailure(error));
-          if (error.status === 401) {
-            router.navigate('/login');
-          }
         }
       };
 

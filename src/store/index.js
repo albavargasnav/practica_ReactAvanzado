@@ -52,11 +52,15 @@ const composeEnhancers = composeWithDevTools ({
     });
   };
   
-  const noAction = () => next => action => {
-    if (action.type === 'NO_TROW') {
-      return;
-    }
-    return next(action);
+  const failureRedirects = (router, redirectsMap) => () => next => action => {
+    const result = next(action);
+  
+    if (action.error) {
+      const redirect = redirectsMap[action.payload.status];
+      if (redirect) {
+        router.navigate(redirect);
+      }
+    return result;
   };
   
   export default function configureStore(preloadedState, { router }) {
@@ -64,7 +68,6 @@ const composeEnhancers = composeWithDevTools ({
       thunk.withExtraArgument({ service: { auth, adverts }, router }),
       timestamp,
       logger,
-      noAction,
     ];
   
     const store = createStore(
