@@ -3,8 +3,7 @@ import { composeWithDevTools } from '@redux-devtools/extension';
 
 import thunk from 'redux-thunk';
 
-import * as auth from '../components/auth/service';
-import * as adverts from '../components/adverts/service';
+import * as service from '../service';
 
 //import {auth, adverts} from './reducers';
 import * as reducers from './reducers';
@@ -65,7 +64,7 @@ const composeEnhancers = composeWithDevTools ({
   
   export default function configureStore(preloadedState, { router }) {
     const middleware = [
-      thunk.withExtraArgument({ service: { auth, adverts }, router }),
+      thunk.withExtraArgument({ service, router }),
       timestamp,
       logger,
     ];

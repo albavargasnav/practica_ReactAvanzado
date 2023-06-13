@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '../shared/Button';
 import { ReactComponent as Icon } from "../../assets/pageicon.svg";
-import { logout } from "../auth/service";
 import classNames from "classnames";
 import "./Header.css";
 import { Link, NavLink } from "react-router-dom";
@@ -12,10 +11,6 @@ const Header = ({ className }) => {
   const isLogged = useSelector(getIsLogged);
   const dispatch = useDispatch();
   const onLogout = () => dispatch(authLogout());
-  const handleLogoutClick = async () => {
-    await logout();
-    onLogout();
-  };
 
   return (
     <header className={classNames('header', className)}>
@@ -33,7 +28,7 @@ const Header = ({ className }) => {
           See latest adverts
         </NavLink>
         {isLogged ? (
-          <Button onClick={handleLogoutClick} className="header-button">
+          <Button onClick={onLogout} className="header-button">
             Logout
           </Button>
         ) : (

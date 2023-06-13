@@ -46,9 +46,16 @@ export const authLogin =
     }
   };
 
-export const authLogout = () => ({
+  export const authLogoutSuccess = () => ({
     type: AUTH_LOGOUT,
-});
+  });
+
+  export const authLogout =
+  () =>
+  async (dispatch, _getState, { service }) => {
+    await service.auth.logout();
+    dispatch(authLogoutSuccess());
+  };
 
 export const advertsLoadedRequest = () => ({
   type: ADVERTS_LOADED_REQUEST,
