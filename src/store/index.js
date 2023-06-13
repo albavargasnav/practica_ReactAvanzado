@@ -1,7 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 
-import {auth, adverts} from './reducers';
+import thunk from 'redux-thunk';
+
+import * as auth from '../components/auth/service';
+import * as adverts from '../components/adverts/service';
+
+//import {auth, adverts} from './reducers';
 import * as reducers from './reducers';
 import * as actionCreators from './actions'
 
@@ -14,16 +19,16 @@ const composeEnhancers = composeWithDevTools ({
 
 // const thunk = store => next => action => {}
 
-const thunk = function (store) {
-    return function (next) {
-      return function (action) {
-        if (typeof action === 'function') {
-          return action(store.dispatch, store.getState);
-        }
-        return next(action);
-      };
-    };
-  };
+// const thunk = function (store) {
+//     return function (next) {
+//       return function (action) {
+//         if (typeof action === 'function') {
+//           return action(store.dispatch, store.getState);
+//         }
+//         return next(action);
+//       };
+//     };
+//   };
   
   const logger = store => next => action => {
     if (action.type) {
@@ -54,7 +59,12 @@ const thunk = function (store) {
     return next(action);
   };
   
-  const middleware = [thunk, timestamp, logger, noAction];
+  const middleware = [
+    thunk.withExtraArgument({ auth, adverts }),
+    timestamp,
+    logger,
+    noAction,
+  ];
   
 
 export default function configureStore(preloadedState) {
