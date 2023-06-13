@@ -1,28 +1,31 @@
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Layout from "../layout/Layout";
 import { useEffect, useState } from "react";
-import { getAdvert, deleteAdvert } from "./service";
+import { deleteAdvert } from "./service"; 
+import { getAdvert } from '../../store/selectors';
+import { useSelector } from 'react-redux';
 import placeholderImage from "../../assets/placeholder.jpg";
 import './Advert.css'
 
 const AdvertPage = () => {
-  const params = useParams();
+  const { advertId } = useParams();
   const navigate = useNavigate();
   const [error, setError] = useState(null);
-  const [advert, setAdvert] = useState(null);
+  // const advert = useSelector(state => getAdvert(state, advertId));
+  const advert = useSelector(getAdvert(advertId));
   const advertSale = advert && advert.sale ? "En venta" : "Se busca";
   const [showAlert, setShowAlert] = useState(false);
 
-  useEffect(() => {
-    getAdvert(params.Id)
-      .then((advert) => setAdvert(advert))
-      .catch((error) => {
-        if (error.status === 404) {
-          return navigate("/404");
-        }
-        setError(error);
-      });
-  }, [params.Id, navigate]);
+  // useEffect(() => {
+  //   getAdvert(params.Id)
+  //     .then((advert) => setAdvert(advert))
+  //     .catch((error) => {
+  //       if (error.status === 404) {
+  //         return navigate("/404");
+  //       }
+  //       setError(error);
+  //     });
+  // }, [params.Id, navigate]);
 
   const handleDeleteClick = () => {
     setShowAlert(true);
