@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Layout from "../layout/Layout";
 import { useEffect, useState } from "react"; //QUITAR "USESTATE" CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
 import { deleteAdvert } from "./service"; 
@@ -11,7 +11,6 @@ import './Advert.css'
 const AdvertPage = () => {
   const dispatch = useDispatch();
   const { advertId } = useParams();
-  const navigate = useNavigate();
   const [error, setError] = useState(null); //QUITAR CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
   // const advert = useSelector(state => getAdvert(state, advertId));
   const advert = useSelector(getAdvert(advertId));
@@ -38,12 +37,8 @@ const AdvertPage = () => {
   };
 
   useEffect(() => {
-    dispatch(advertLoad(advertId)).catch(error => {
-      if (error.status === 404) {
-        return navigate('/404');
-      }
-    });
-  }, [dispatch, advertId, navigate]);
+    dispatch(advertLoad(advertId));
+  }, [dispatch, advertId]);
 
   return (
     <Layout title="Advert Page">

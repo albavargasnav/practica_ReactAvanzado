@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '../shared/Button';
 import FormField from '../shared/FormField';
 import './LoginPage.css';
-import { useLocation, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 import { useEffect } from 'react';
 import { authLogin, uiResetError } from '../../store/actions';
@@ -13,8 +12,6 @@ import { getUi } from '../../store/selectors';
 
 function LoginPage() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
   const { isLoading, error } = useSelector(getUi);
   const renders = useRef(0);
 
@@ -37,13 +34,7 @@ function LoginPage() {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    dispatch(authLogin(credentials))
-      .then(() => {
-        // Redirect to pathname
-        const to = location.state?.from?.pathname || '/';
-        navigate(to);
-      })
-      .catch(error => console.log(error));
+    dispatch(authLogin(credentials));
   };
 
   const handleChange = event => {

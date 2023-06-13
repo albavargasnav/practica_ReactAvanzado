@@ -3,7 +3,6 @@ import Layout from '../layout/Layout';
 import Button from '../shared/Button';
 import './NewAdvertPage.css';
 import { getTags } from './service'; //añadir gettags en advertcreate un poco mas abajo (en actions)
-import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { advertCreate } from '../../store/actions';
 import { getUi } from '../../store/selectors';
@@ -14,7 +13,6 @@ const MIN_CHARACTERS = 5;
 const NewAdvertPage = () => {
   const dispatch = useDispatch();
   const { isLoading } = useSelector(getUi);
-  const navigate = useNavigate();
   const [name, setName] = useState('');
   const [sale, setSale] = useState(false);
   const [tags, setTags] = useState([]);
@@ -56,27 +54,28 @@ const NewAdvertPage = () => {
     setPhoto(file || null);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = event => {
     event.preventDefault();
-    try {
-      const advert = await dispatch(advertCreate({ content }));
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('sale', sale);
-      formData.append('tags', tags);
-      formData.append('price', price);
-      if (photo) {
-        formData.append('photo', photo);
-      }
-      await advertCreate(formData);
+    // try {
+    //   const advert = await dispatch(advertCreate({ content }));
+    //   const formData = new FormData();
+    //   formData.append('name', name);
+    //   formData.append('sale', sale);
+    //   formData.append('tags', tags);
+    //   formData.append('price', price);
+    //   if (photo) {
+    //     formData.append('photo', photo);
+    //   }
+    //   await advertCreate(formData);
 
-      setIsLoading(false);
-      navigate(`/adverts/${advert.id}`);
-    } catch (error) {
-      if (error.status === 401) {
-        navigate('/login');
-      }
-    }
+    //   setIsLoading(false);
+    //   navigate(`/adverts/${advert.id}`);
+    // } catch (error) {
+    //   if (error.status === 401) {
+    //     navigate('/login');
+    //   }
+    // }
+    dispatch(advertCreate({ content }));
   };
 
   const isDisabled = isLoading || name.length < MIN_CHARACTERS;

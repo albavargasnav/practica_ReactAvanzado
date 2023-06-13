@@ -32,15 +32,17 @@ export const authLoginFailure = error => ({
 
 export const authLogin =
   credentials =>
-  async (dispatch, _getState, { auth }) => {
+  async (dispatch, _getState, { service, router }) => {
     dispatch(authLoginRequest());
     try {
-      await auth.login(credentials);
+      await service.auth.login(credentials);
       // Logged in
       dispatch(authLoginSuccess());
+      // Redirect to pathname
+      const to = router.state.location.state?.from?.pathname || '/';
+      router.navigate(to);
     } catch (error) {
       dispatch(authLoginFailure(error));
-      throw error;
     }
   };
 
@@ -65,13 +67,13 @@ export const advertsLoadedFailure = error => ({
 
 export const advertsLoaded =
   () =>
-  async (dispatch, getState, { adverts: advertsService }) => {
+  async (dispatch, getState, { service }) => {
     if (areAdvertsLoaded(getState())) {
       return;
     }
     dispatch(advertsLoadedRequest());
     try {
-      const adverts = await advertsService.getLatestAdverts();
+      const adverts = await service.adverts.getLatestAdverts();
       dispatch(advertsLoadedSuccess(adverts));
     } catch (error) {
       dispatch(advertsLoadedFailure(error));
@@ -95,18 +97,20 @@ export const advertsLoaded =
   
   export const advertLoad =
     advertId =>
-    async (dispatch, getState, { adverts: advertsService }) => {
+    async (dispatch, getState, { service, router }) => {
       const isLoaded = getAdvert(advertId)(getState());
       if (isLoaded) {
         return;
       }
       dispatch(advertLoadedRequest());
       try {
-        const advert = await advertsService.getAdvert(advertId);
+        const advert = await service.adverts.getAdvert(advertId);
         dispatch(advertLoadedSuccess(advert));
       } catch (error) {
         dispatch(advertLoadedFailure(error));
-        throw error;
+        if (error.status === 404) {
+          return router.navigate('/404');
+        }
       }
     };
 
@@ -127,16 +131,19 @@ export const advertsLoaded =
     
     export const advertCreate =
       advert =>
-      async (dispatch, _getState, { adverts: advertsService }) => {
+      async (dispatch, _getState, { service, router }) => {
         dispatch(advertCreateRequest());
         try {
-          const { id } = await advertsService.createAdvert(advert);
-          const createdAdvert = await advertsService.getAdvert(id);
+          const { id } = await service.adverts.createAdvert(advert);
+          const createdAdvert = await service.adverts.getAdvert(id);
           dispatch(advertCreateSuccess(createdAdvert));
+          router.navigate(`/adverts/${id}`);
           return createdAdvert;
         } catch (error) {
           dispatch(advertCreateFailure(error));
-          throw error;
+          if (error.status === 401) {
+            router.navigate('/login');
+          }
         }
       };
 

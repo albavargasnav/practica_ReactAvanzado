@@ -59,15 +59,14 @@ const composeEnhancers = composeWithDevTools ({
     return next(action);
   };
   
-  const middleware = [
-    thunk.withExtraArgument({ auth, adverts }),
-    timestamp,
-    logger,
-    noAction,
-  ];
+  export default function configureStore(preloadedState, { router }) {
+    const middleware = [
+      thunk.withExtraArgument({ service: { auth, adverts }, router }),
+      timestamp,
+      logger,
+      noAction,
+    ];
   
-
-export default function configureStore(preloadedState) {
     const store = createStore(
         reducer,
         preloadedState,
