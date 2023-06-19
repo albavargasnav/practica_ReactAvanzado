@@ -9,6 +9,8 @@ import * as service from '../service';
 import * as reducers from './reducers';
 import * as actionCreators from './actions'
 
+import { authLoginSuccess } from './actions';
+
 
 const reducer = combineReducers(reducers);
 
@@ -75,6 +77,15 @@ const composeEnhancers = composeWithDevTools ({
         preloadedState,
         composeEnhancers(applyMiddleware(...middleware)),
       );
+    
+      const token = localStorage.getItem('token');
+      if (token) {
+        store.dispatch(authLoginSuccess());
+      }
+
+
+
     return store;
   }
+
 

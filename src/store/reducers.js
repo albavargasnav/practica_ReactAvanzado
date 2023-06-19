@@ -35,7 +35,12 @@ export const defaultState = {
 export function auth(state = defaultState.auth, action) {
   switch (action.type) {
     case AUTH_LOGIN_SUCCESS:
-      return true;
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        token: action.payload.token, // Asegúrate de asignar el token correctamente aquí
+      };
     case AUTH_LOGOUT:
       return false;
     default:
@@ -77,10 +82,10 @@ export function ui(state = defaultState.ui, action) {
   return state;
 }
 
-
-// export default function combinedReducer(state = defaultState, action) {
-//   return {
-//     auth: auth(state.auth, action),
-//     adverts: adverts(state.adverts, action),
-//   };
-// }
+export default function combinedReducer(state = defaultState, action) {
+  return {
+    auth: auth(state.auth, action),
+    adverts: adverts(state.adverts, action),
+    ui: ui(state.ui, action),
+  };
+}

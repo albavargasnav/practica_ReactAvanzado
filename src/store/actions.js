@@ -16,12 +16,29 @@ import {
     ADVERT_CREATED_FAILURE,
   } from './types';
 
+  export const authLogin = credentials => async (dispatch, _getState, { service, router }) => {
+    dispatch(authLoginRequest());
+    try {
+      const token = await service.auth.login(credentials);
+      // Logged in
+      dispatch(authLoginSuccess(token));
+      // Redirect to pathname
+      const to = router.state.location.state?.from?.pathname || '/';
+      router.navigate(to);
+    } catch (error) {
+      dispatch(authLoginFailure(error));
+    }
+  };
+
 export const authLoginRequest = () => ({
   type: AUTH_LOGIN_REQUEST,
 });
 
-export const authLoginSuccess = () => ({
+export const authLoginSuccess = (token) => ({
   type: AUTH_LOGIN_SUCCESS,
+  payload: {
+    token: token,
+  },
 });
 
 export const authLoginFailure = error => ({
@@ -30,21 +47,7 @@ export const authLoginFailure = error => ({
   payload: error,
 });
 
-export const authLogin =
-  credentials =>
-  async (dispatch, _getState, { service, router }) => {
-    dispatch(authLoginRequest());
-    try {
-      await service.auth.login(credentials);
-      // Logged in
-      dispatch(authLoginSuccess());
-      // Redirect to pathname
-      const to = router.state.location.state?.from?.pathname || '/';
-      router.navigate(to);
-    } catch (error) {
-      dispatch(authLoginFailure(error));
-    }
-  };
+
 
   export const authLogoutSuccess = () => ({
     type: AUTH_LOGOUT,
@@ -151,4 +154,6 @@ export const advertsLoaded =
 export const uiResetError = () => ({
     type: UI_RESET_ERROR,
   });
+
+  
 
