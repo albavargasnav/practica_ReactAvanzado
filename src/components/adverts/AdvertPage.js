@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import Layout from "../layout/Layout";
 import { useEffect, useState } from "react"; //QUITAR "USESTATE" CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
-import { deleteAdvert } from "./service"; 
+//import { deleteAdvert } from "./service"; 
 import { getAdvert } from '../../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { advertLoad } from '../../store/actions';
@@ -23,13 +23,13 @@ const AdvertPage = () => {
   };
 
   const handleAlertConfirm = () => {
-    deleteAdvert(advert.id)
-      .then(() => {
-        navigate("/");
-      })
-      .catch((error) => {
-        setError(error);
-      });
+    // deleteAdvert(advert.id)
+    //   .then(() => {
+    //     navigate("/");
+    //   })
+    //   .catch((error) => {
+    //     setError(error);
+    //   });
   };
 
   const handleAlertCancel = () => {

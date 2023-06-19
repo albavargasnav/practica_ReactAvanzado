@@ -61,6 +61,7 @@ const composeEnhancers = composeWithDevTools ({
       }
     return result;
   };
+}
   
   export default function configureStore(preloadedState, { router }) {
     const middleware = [
@@ -75,4 +76,5 @@ const composeEnhancers = composeWithDevTools ({
         composeEnhancers(applyMiddleware(...middleware)),
       );
     return store;
-}
+  }
+

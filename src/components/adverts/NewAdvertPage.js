@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import Button from '../shared/Button';
 import './NewAdvertPage.css';
-import { getTags } from './service'; //añadir gettags en advertcreate un poco mas abajo (en actions)
+//import { getTags } from './service'; //añadir gettags en advertcreate un poco mas abajo (en actions)
 import { useDispatch, useSelector } from 'react-redux';
 import { advertCreate } from '../../store/actions';
 import { getUi } from '../../store/selectors';
@@ -21,12 +21,12 @@ const NewAdvertPage = () => {
   const [obtainTags, setObtainTags] = useState([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const tags = await getTags();
-      console.log(tags);
-      setObtainTags(tags);
-    }
-    fetchData();
+    // async function fetchData() {
+    //   const tags = await getTags();
+    //   console.log(tags);
+    //   setObtainTags(tags);
+    // }
+    // fetchData();
   }, []);
 
   const handleNameChange = (event) => {
@@ -75,7 +75,8 @@ const NewAdvertPage = () => {
     //     navigate('/login');
     //   }
     // }
-    dispatch(advertCreate({ content }));
+    
+    //dispatch(advertCreate({ content }));
   };
 
   const isDisabled = isLoading || name.length < MIN_CHARACTERS;
