@@ -39,7 +39,7 @@ export function auth(state = defaultState.auth, action) {
         ...state,
         loading: false,
         isAuthenticated: true,
-        token: action.payload.token, // Asegúrate de asignar el token correctamente aquí
+        token: action.payload.token, 
       };
     case AUTH_LOGOUT:
       return false;
