@@ -7,7 +7,7 @@ export const getAdverts = state =>
 //   getAdverts(state).find(advert => advert.id === +advertId);
 
 export const getAdvert = advertId => state =>
-  state.adverts.data.find(advert => advert.id === Number(advertId));
+  state.adverts.data.find(advert => advert.id === (advertId));
 
 export const getUi = state => state.ui;
 

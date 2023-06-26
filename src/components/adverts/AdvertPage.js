@@ -10,10 +10,10 @@ import './Advert.css'
 
 const AdvertPage = () => {
   const dispatch = useDispatch();
-  const { advertId } = useParams();
+  const { Id } = useParams();
   const [error, setError] = useState(null); //QUITAR CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
-  // const advert = useSelector(state => getAdvert(state, advertId));
-  const advert = useSelector(getAdvert(advertId));
+  // const advert = useSelector(state => getAdvert(state, Id));
+  const advert = useSelector(getAdvert(Id));
   const advertSale = advert && advert.sale ? "En venta" : "Se busca";
   const [showAlert, setShowAlert] = useState(false);
 
@@ -37,8 +37,8 @@ const AdvertPage = () => {
   };
 
   useEffect(() => {
-    dispatch(advertLoad(advertId));
-  }, [dispatch, advertId]);
+    dispatch(advertLoad(Id));
+  }, [dispatch, Id]);
 
   return (
     <Layout title="Advert Page">
