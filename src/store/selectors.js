@@ -7,8 +7,7 @@ export const getAdverts = state =>
 //   getAdverts(state).find(advert => advert.id === +advertId);
 
 export const getAdvert = advertId => state =>
-// carga los estados pero no los anuncios state.adverts.data.find(advert => advert.id === Number(advertId));
-state.adverts.data.find(advert => advert.id === (advertId));
+  state.adverts.data.find(advert => advert.id === (advertId));
 
 
 
