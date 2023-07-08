@@ -7,6 +7,7 @@ export const login = (credentials, rememberMe) => {
     if (rememberMe) {
       localStorage.setItem('auth', accessToken);
     }
+    return accessToken;
   });
 };
 
