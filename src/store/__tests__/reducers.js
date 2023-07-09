@@ -3,10 +3,14 @@ import { auth, defaultState } from '../reducers';
 
 describe('auth', () => {
   test('should manage "AUTH_LOGIN_SUCCESS" action', () => {
-    const state = defaultState.auth;
+    const state = { isAuthenticated: false, loading: false, token: undefined };
     const action = authLoginSuccess();
     const newState = auth(state, action);
-    expect(newState).toBe(true);
+    expect(newState).toEqual({
+      isAuthenticated: true,
+      loading: false,
+      token: action.payload.token,
+    });
   });
 
   test('should manage "AUTH_LOGOUT" action', () => {
