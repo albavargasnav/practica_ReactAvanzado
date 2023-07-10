@@ -21,6 +21,7 @@ const NewAdvertPage = () => {
   const tags = useSelector(state => state.ui.tags); // Obtengo los tags del estado de Redux
   const tagsLoading = useSelector(state => state.ui.tagsLoading); // Obtengo el estado de carga de los tags
   const tagsError = useSelector(state => state.ui.tagsError); // Obtengo el error relacionado con los tags
+  const [selectedTags, setSelectedTags] = useState([]);
 
 
 useEffect(() => {
@@ -65,13 +66,14 @@ useEffect(() => {
     setPhoto(file || null);
   };
 
+
   const handleSubmit = event => {
     event.preventDefault();
   
     const formData = new FormData();
     formData.append('name', name);
     formData.append('sale', sale);
-    formData.append('tags', tags);
+    formData.append('tags', selectedTags.join(','));
     formData.append('price', price);
     if (photo) {
       formData.append('photo', photo);
@@ -141,6 +143,7 @@ useEffect(() => {
       multiple
       value={tags}
       required
+      onChange={(event) => setSelectedTags(Array.from(event.target.selectedOptions, (option) => option.value))}
     >
       {obtainTags.map((tag, index) => (
   <option key={index} value={tag}>{tag}</option>
