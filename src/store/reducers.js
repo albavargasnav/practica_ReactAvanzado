@@ -4,6 +4,9 @@ import {
   ADVERTS_LOADED_SUCCESS,
   ADVERT_CREATED_SUCCESS,
   ADVERT_LOADED_SUCCESS,
+  TAGS_REQUEST,
+  TAGS_SUCCESS,
+  TAGS_FAILURE,
   UI_RESET_ERROR,
 } from './types';
 
@@ -16,6 +19,8 @@ export const defaultState = {
   ui: {
     isLoading: false,
     error: null,
+    tagsLoading: false,
+    tagsError: null,
   },
 };
 
@@ -63,6 +68,26 @@ export function adverts(state = defaultState.adverts, action) {
 }
 
 export function ui(state = defaultState.ui, action) {
+  if (action.type === TAGS_REQUEST) {
+    return {
+      ...state,
+      tagsLoading: true,
+      tagsError: null,
+    };
+  }
+  if (action.type === TAGS_SUCCESS) {
+    return {
+      ...state,
+      tagsLoading: false,
+    };
+  }
+  if (action.type === TAGS_FAILURE) {
+    return {
+      ...state,
+      tagsLoading: false,
+      tagsError: action.payload,
+    };
+  }
   if (action.error) {
     return { isLoading: false, error: action.payload };
   }
@@ -81,6 +106,7 @@ export function ui(state = defaultState.ui, action) {
 
   return state;
 }
+
 
 export default function combinedReducer(state = defaultState, action) {
   return {

@@ -14,6 +14,9 @@ import {
     ADVERT_CREATED_SUCCESS,
     ADVERT_CREATED_REQUEST,
     ADVERT_CREATED_FAILURE,
+    TAGS_REQUEST,
+    TAGS_SUCCESS,
+    TAGS_FAILURE,
   } from './types';
 
   export const authLogin = credentials => async (dispatch, _getState, { service, router }) => {
@@ -150,6 +153,20 @@ export const advertsLoaded =
           dispatch(advertCreateFailure(error));
         }
       };
+
+      export const tagsRequest = () => ({
+        type: TAGS_REQUEST,
+      });
+      
+      export const tagsSuccess = (tags) => ({
+        type: TAGS_SUCCESS,
+        payload: tags,
+      });
+      
+      export const tagsFailure = (error) => ({
+        type: TAGS_FAILURE,
+        payload: error,
+      });
 
 export const uiResetError = () => ({
     type: UI_RESET_ERROR,

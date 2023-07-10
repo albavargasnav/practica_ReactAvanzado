@@ -4,7 +4,7 @@ import Button from '../shared/Button';
 import './NewAdvertPage.css';
 //import { getTags } from './service'; //añadir gettags en advertcreate un poco mas abajo (en actions)
 import { useDispatch, useSelector } from 'react-redux';
-import { advertCreate } from '../../store/actions';
+import { advertCreate, tagsRequest, tagsSuccess, tagsFailure } from '../../store/actions';
 import { getUi } from '../../store/selectors';
 
 
@@ -15,10 +15,23 @@ const NewAdvertPage = () => {
   const { isLoading } = useSelector(getUi);
   const [name, setName] = useState('');
   const [sale, setSale] = useState(false);
-  const [tags, setTags] = useState([]);
   const [price, setPrice] = useState(0);
   const [photo, setPhoto] = useState(null);
   const [obtainTags, setObtainTags] = useState([]);
+  const tags = useSelector(state => state.ui.tags); // Obtengo los tags del estado de Redux
+  const tagsLoading = useSelector(state => state.ui.tagsLoading); // Obtengo el estado de carga de los tags
+  const tagsError = useSelector(state => state.ui.tagsError); // Obtengo el error relacionado con los tags
+
+
+useEffect(() => {
+  dispatch(tagsRequest()); // Inicio la solicitud de obtención de los tags
+
+  // Simulo la obtención exitosa de los tags hardcodeados
+  const hardCodedTags = ['Mobile', 'Motor', 'LifeStyle'];
+  setTimeout(() => {
+    dispatch(tagsSuccess(hardCodedTags)); // Establezco los tags hardcodeados como éxito
+  }, 2000);
+}, [dispatch]);
 
   useEffect(() => {
     // async function fetchData() {
@@ -37,13 +50,11 @@ const NewAdvertPage = () => {
     setSale(event.target.value === 'true');
   };
 
-  const handleTagsChange = (event) => {
-    const selectedTags = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setTags(selectedTags);
-  };
+
+  useEffect(() => {
+    const hardCodedTags = ['Mobile', 'Motor', 'LifeStyle']; 
+    setObtainTags(hardCodedTags);
+  }, []);
 
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
@@ -56,27 +67,17 @@ const NewAdvertPage = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    // try {
-    //   const advert = await dispatch(advertCreate({ content }));
-    //   const formData = new FormData();
-    //   formData.append('name', name);
-    //   formData.append('sale', sale);
-    //   formData.append('tags', tags);
-    //   formData.append('price', price);
-    //   if (photo) {
-    //     formData.append('photo', photo);
-    //   }
-    //   await advertCreate(formData);
-
-    //   setIsLoading(false);
-    //   navigate(`/adverts/${advert.id}`);
-    // } catch (error) {
-    //   if (error.status === 401) {
-    //     navigate('/login');
-    //   }
-    // }
-    
-    //dispatch(advertCreate({ content }));
+  
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('sale', sale);
+    formData.append('tags', tags);
+    formData.append('price', price);
+    if (photo) {
+      formData.append('photo', photo);
+    }
+  
+    dispatch(advertCreate(formData));
   };
 
   const isDisabled = isLoading || name.length < MIN_CHARACTERS;
@@ -120,28 +121,33 @@ const NewAdvertPage = () => {
               </select>
             </label>
             <br />
-            <div
-              className='createAdvertContainer'
-              style={{ display: 'flex', flexDirection: 'row' }}
-            >
-              <b>Tags: </b>
-              <select
-                style={{
-                  borderWidth: 1,
-                  marginLeft: '15px',
-                  marginTop: '6px',
-                  marginBottom: '20px',
-                }}
-                multiple
-                value={tags}
-                onChange={handleTagsChange}
-                required
-              >
-                {obtainTags.map((tag) => (
-                  <option value={tag}>{tag}</option>
-                ))}
-              </select>
-            </div>
+            {tagsLoading ? (
+  <div>Cargando tags...</div>
+) : tagsError ? (
+  <div>Error al obtener los tags</div>
+) : (
+  <div
+    className="createAdvertContainer"
+    style={{ display: 'flex', flexDirection: 'row' }}
+  >
+    <b>Tags: </b>
+    <select
+      style={{
+        borderWidth: 1,
+        marginLeft: '15px',
+        marginTop: '6px',
+        marginBottom: '20px',
+      }}
+      multiple
+      value={tags}
+      required
+    >
+      {obtainTags.map((tag, index) => (
+  <option key={index} value={tag}>{tag}</option>
+))}
+    </select>
+  </div>
+)}
             <label>
               <b>Price:</b>
               <input
