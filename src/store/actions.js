@@ -25,9 +25,7 @@ import {
     dispatch(authLoginRequest());
     try {
       const token = await service.auth.login(credentials);
-      // Logged in
       dispatch(authLoginSuccess(token));
-      // Redirect to pathname
       const to = router.state.location.state?.from?.pathname || '/';
       router.navigate(to);
     } catch (error) {
@@ -51,8 +49,6 @@ export const authLoginFailure = error => ({
   error: true,
   payload: error,
 });
-
-
 
   export const authLogoutSuccess = () => ({
     type: AUTH_LOGOUT,
@@ -169,8 +165,6 @@ export const advertsLoaded =
         type: TAGS_FAILURE,
         payload: error,
       });
-
-      
 
       export const advertDeleteRequest = () => ({
         type: ADVERTS_LOADED_REQUEST,

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Layout from '../layout/Layout';
 import Button from '../shared/Button';
 import './NewAdvertPage.css';
-//import { getTags } from './service'; //añadir gettags en advertcreate un poco mas abajo (en actions)
 import { useDispatch, useSelector } from 'react-redux';
 import { advertCreate, tagsRequest, tagsSuccess, tagsFailure } from '../../store/actions';
 import { getUi } from '../../store/selectors';
@@ -18,30 +17,19 @@ const NewAdvertPage = () => {
   const [price, setPrice] = useState(0);
   const [photo, setPhoto] = useState(null);
   const [obtainTags, setObtainTags] = useState([]);
-  const tags = useSelector(state => state.ui.tags); // Obtengo los tags del estado de Redux
-  const tagsLoading = useSelector(state => state.ui.tagsLoading); // Obtengo el estado de carga de los tags
-  const tagsError = useSelector(state => state.ui.tagsError); // Obtengo el error relacionado con los tags
+  const tags = useSelector(state => state.ui.tags); 
+  const tagsLoading = useSelector(state => state.ui.tagsLoading);
+  const tagsError = useSelector(state => state.ui.tagsError); 
   const [selectedTags, setSelectedTags] = useState([]);
 
 
 useEffect(() => {
-  dispatch(tagsRequest()); // Inicio la solicitud de obtención de los tags
-
-  // Simulo la obtención exitosa de los tags hardcodeados
-  const hardCodedTags = ['Mobile', 'Motor', 'LifeStyle'];
+  dispatch(tagsRequest()); 
+  const listTags = ['Mobile', 'Motor', 'LifeStyle', 'Work'];
   setTimeout(() => {
-    dispatch(tagsSuccess(hardCodedTags)); // Establezco los tags hardcodeados como éxito
+    dispatch(tagsSuccess(listTags)); 
   }, 2000);
 }, [dispatch]);
-
-  useEffect(() => {
-    // async function fetchData() {
-    //   const tags = await getTags();
-    //   console.log(tags);
-    //   setObtainTags(tags);
-    // }
-    // fetchData();
-  }, []);
 
   const handleNameChange = (event) => {
     setName(event.target.value);
@@ -51,10 +39,9 @@ useEffect(() => {
     setSale(event.target.value === 'true');
   };
 
-
   useEffect(() => {
-    const hardCodedTags = ['Mobile', 'Motor', 'LifeStyle']; 
-    setObtainTags(hardCodedTags);
+    const listTags = ['Mobile', 'Motor', 'LifeStyle', 'Work']; 
+    setObtainTags(listTags);
   }, []);
 
   const handlePriceChange = (event) => {
@@ -66,10 +53,8 @@ useEffect(() => {
     setPhoto(file || null);
   };
 
-
   const handleSubmit = event => {
     event.preventDefault();
-  
     const formData = new FormData();
     formData.append('name', name);
     formData.append('sale', sale);
@@ -78,7 +63,6 @@ useEffect(() => {
     if (photo) {
       formData.append('photo', photo);
     }
-  
     dispatch(advertCreate(formData));
   };
 
@@ -124,33 +108,33 @@ useEffect(() => {
             </label>
             <br />
             {tagsLoading ? (
-  <div>Cargando tags...</div>
-) : tagsError ? (
-  <div>Error al obtener los tags</div>
-) : (
-  <div
-    className="createAdvertContainer"
-    style={{ display: 'flex', flexDirection: 'row' }}
-  >
-    <b>Tags: </b>
-    <select
-      style={{
-        borderWidth: 1,
-        marginLeft: '15px',
-        marginTop: '6px',
-        marginBottom: '20px',
-      }}
-      multiple
-      value={tags}
-      required
-      onChange={(event) => setSelectedTags(Array.from(event.target.selectedOptions, (option) => option.value))}
-    >
-      {obtainTags.map((tag, index) => (
-  <option key={index} value={tag}>{tag}</option>
-))}
-    </select>
-  </div>
-)}
+                <div>Cargando tags...</div>
+              ) : tagsError ? (
+                <div>Error al obtener los tags</div>
+              ) : (
+                <div
+                  className="createAdvertContainer"
+                  style={{ display: 'flex', flexDirection: 'row' }}
+                >
+                  <b>Tags: </b>
+                  <select
+                    style={{
+                      borderWidth: 1,
+                      marginLeft: '15px',
+                      marginTop: '6px',
+                      marginBottom: '20px',
+                    }}
+                    multiple
+                    value={tags}
+                    required
+                    onChange={(event) => setSelectedTags(Array.from(event.target.selectedOptions, (option) => option.value))}
+                  >
+                    {obtainTags.map((tag, index) => (
+                      <option key={index} value={tag}>{tag}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
             <label>
               <b>Price:</b>
               <input
@@ -177,7 +161,6 @@ useEffect(() => {
               />
             </label>
             <br />
-
             <div className="newAdvertPage-footer">
               <Button
                 type="submit"

@@ -5,7 +5,6 @@ import thunk from 'redux-thunk';
 
 import * as service from '../service';
 
-//import {auth, adverts} from './reducers';
 import * as reducers from './reducers';
 import * as actionCreators from './actions'
 
@@ -17,19 +16,6 @@ const reducer = combineReducers(reducers);
 const composeEnhancers = composeWithDevTools ({
     actionCreators,
 })
-
-// const thunk = store => next => action => {}
-
-// const thunk = function (store) {
-//     return function (next) {
-//       return function (action) {
-//         if (typeof action === 'function') {
-//           return action(store.dispatch, store.getState);
-//         }
-//         return next(action);
-//       };
-//     };
-//   };
   
   const logger = store => next => action => {
     if (action.type) {
@@ -82,8 +68,6 @@ const composeEnhancers = composeWithDevTools ({
       if (token) {
         store.dispatch(authLoginSuccess());
       }
-
-
 
     return store;
   }

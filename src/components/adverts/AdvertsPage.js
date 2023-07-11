@@ -92,10 +92,6 @@ const mapStateToProps = state => ({
   ...getUi(state),
 });
 
-// const mapDispatchToProps = dispatch => ({
-//   onAdvertsLoaded: adverts => dispatch(advertsLoaded(adverts)),
-// });
-
 const mapDispatchToProps = {
   onAdvertsLoaded: advertsLoaded,
 };

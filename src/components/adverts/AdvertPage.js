@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import Layout from "../layout/Layout";
-import { useEffect, useState } from "react"; //QUITAR "USESTATE" CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
-//import { deleteAdvert } from "./service"; 
+import { useEffect, useState } from "react";
 import { getAdvert } from '../../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { advertLoad, advertDelete } from '../../store/actions';
@@ -11,25 +10,13 @@ import './Advert.css'
 const AdvertPage = () => {
   const dispatch = useDispatch();
   const { Id } = useParams();
-  const [error, setError] = useState(null); //QUITAR CUANDO SE AÑADA EL BORRAR ANUNCIO REDUX
-  // const advert = useSelector(state => getAdvert(state, Id));
+  const [error, setError] = useState(null); 
   const advert = useSelector(getAdvert(Id));
   const advertSale = advert && advert.sale ? "En venta" : "Se busca";
   const [showAlert, setShowAlert] = useState(false);
 
-
   const handleDeleteClick = () => {
     setShowAlert(true);
-  };
-
-  const handleAlertConfirm = () => {
-    // deleteAdvert(advert.id)
-    //   .then(() => {
-    //     navigate("/");
-    //   })
-    //   .catch((error) => {
-    //     setError(error);
-    //   });
   };
 
   const handleAlertCancel = () => {

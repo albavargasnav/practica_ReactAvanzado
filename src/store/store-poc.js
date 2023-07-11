@@ -1,8 +1,3 @@
-// import { createStore } from 'redux';
-
-// action { type: 'INCREMENT', payload: 2 }
-// action { type: 'DECREMENT', payload: 3 }
-
 const INCREMENT = 'INCREMENT';
 const DECREMENT = 'DECREMENT';
 
