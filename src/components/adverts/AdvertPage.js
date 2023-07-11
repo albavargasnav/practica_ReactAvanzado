@@ -3,7 +3,7 @@ import Layout from "../layout/Layout";
 import { useEffect, useState } from "react";
 import { getAdvert } from '../../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { advertLoad, advertDelete } from '../../store/actions';
+import { advertLoad, advertDeleted } from '../../store/actions';
 import placeholderImage from "../../assets/placeholder.jpg";
 import './Advert.css'
 
@@ -15,7 +15,7 @@ const AdvertPage = () => {
   const advertSale = advert && advert.sale ? "En venta" : "Se busca";
   const [showAlert, setShowAlert] = useState(false);
 
-  const handleDeleteClick = () => {
+  const handleDeletedClick = () => {
     setShowAlert(true);
   };
 
@@ -28,8 +28,8 @@ const AdvertPage = () => {
   }, [dispatch, Id]);
 
   
-  const handleDelete = async event => {
-    dispatch(advertDelete(advert.id));
+  const handleDeleted = async event => {
+    dispatch(advertDeleted(advert.id));
   };
 
   return (
@@ -52,7 +52,7 @@ const AdvertPage = () => {
               {!showAlert && (
                 <button
                   className="advert-delete-button"
-                  onClick={handleDeleteClick}
+                  onClick={handleDeletedClick}
                 >
                   Borrar anuncio
                 </button>
@@ -66,7 +66,7 @@ const AdvertPage = () => {
                   <div className="advert-delete-alert-buttons">
                     <button
                       className="advert-delete-alert-confirm"
-                      onClick={handleDelete}
+                      onClick={handleDeleted}
                     >
                       Aceptar
                     </button>

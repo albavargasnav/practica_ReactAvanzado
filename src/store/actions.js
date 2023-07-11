@@ -181,7 +181,7 @@ export const advertsLoaded =
         payload: error,
       });
       
-      export const advertDelete =
+      export const advertDeleted =
         advertId =>
         async (dispatch, _getState, { service, router }) => {
           dispatch(advertDeleteRequest());
@@ -193,7 +193,6 @@ export const advertsLoaded =
             dispatch(advertCreateFailure(error));
           }
         };
-      
 
 export const uiResetError = () => ({
     type: UI_RESET_ERROR,
