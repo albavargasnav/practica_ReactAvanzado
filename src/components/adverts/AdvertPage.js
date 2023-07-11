@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"; //QUITAR "USESTATE" CUANDO SE AÑAD
 //import { deleteAdvert } from "./service"; 
 import { getAdvert } from '../../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
-import { advertLoad } from '../../store/actions';
+import { advertLoad, advertDelete } from '../../store/actions';
 import placeholderImage from "../../assets/placeholder.jpg";
 import './Advert.css'
 
@@ -40,6 +40,11 @@ const AdvertPage = () => {
     dispatch(advertLoad(Id));
   }, [dispatch, Id]);
 
+  
+  const handleDelete = async event => {
+    dispatch(advertDelete(advert.id));
+  };
+
   return (
     <Layout title="Advert Page">
       {advert && advert.id && (
@@ -74,7 +79,7 @@ const AdvertPage = () => {
                   <div className="advert-delete-alert-buttons">
                     <button
                       className="advert-delete-alert-confirm"
-                      onClick={handleAlertConfirm}
+                      onClick={handleDelete}
                     >
                       Aceptar
                     </button>

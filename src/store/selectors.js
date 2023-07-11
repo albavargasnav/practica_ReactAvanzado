@@ -9,8 +9,6 @@ export const getAdverts = state =>
 export const getAdvert = advertId => state =>
   state.adverts.data.find(advert => advert.id === (advertId));
 
-
-
 export const getUi = state => state.ui;
 
 export const areAdvertsLoaded = state => state.adverts.areLoaded;

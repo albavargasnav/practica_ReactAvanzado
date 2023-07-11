@@ -17,6 +17,8 @@ import {
     TAGS_REQUEST,
     TAGS_SUCCESS,
     TAGS_FAILURE,
+    ADVERT_DELETED_SUCCESS,
+    ADVERT_DELETED_FAILURE,
   } from './types';
 
   export const authLogin = credentials => async (dispatch, _getState, { service, router }) => {
@@ -167,6 +169,37 @@ export const advertsLoaded =
         type: TAGS_FAILURE,
         payload: error,
       });
+
+      
+
+      export const advertDeleteRequest = () => ({
+        type: ADVERTS_LOADED_REQUEST,
+      });
+      
+      export const advertDeleteSuccess = advertId => ({
+        type: ADVERT_DELETED_SUCCESS,
+        payload: advertId,
+      });
+      
+      export const advertDeleteFailure = error => ({
+        type: ADVERT_DELETED_FAILURE,
+        error: true,
+        payload: error,
+      });
+      
+      export const advertDelete =
+        advertId =>
+        async (dispatch, _getState, { service, router }) => {
+          dispatch(advertDeleteRequest());
+          try {
+            await service.adverts.deleteAdvert(advertId);
+            dispatch(advertDeleteSuccess(advertId));
+            router.navigate(`/adverts`);
+          } catch (error) {
+            dispatch(advertCreateFailure(error));
+          }
+        };
+      
 
 export const uiResetError = () => ({
     type: UI_RESET_ERROR,
